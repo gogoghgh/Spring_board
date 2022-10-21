@@ -33,6 +33,21 @@
 	</select>
 	
 	
+	<!-- 3-1. 글 조회수 1 증가 =========================================== -->
+	<update id="updateReadCnt">
+		update tbl_board
+		set viewcnt = viewcnt + 1
+		where bno = #{bno}
+	</update>
+	
+	
+	<!-- 4-1. 글 수정 ====================================== -->
+	<update id="updateBoard">
+		update tbl_board
+		set title = #{title}, writer = #{writer}, content = #{content}
+		where bno = #{bno}
+	</update>
+	
 	
 	
 </mapper>

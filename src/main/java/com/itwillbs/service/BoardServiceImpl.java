@@ -60,11 +60,39 @@ public class BoardServiceImpl implements BoardService {
 	public BoardVO getBoard(Integer bno) throws Exception {
 		log.info("(♥♥♥♥♥ 3.getBoard) 컨트롤러가 호출함");
 		
-		log.info("(♥♥♥♥♥ 3.getBoard) DAO_ 호출할 거 --> 리턴받고 바로 컨트롤러로 갈 거");
+		log.info("(♥♥♥♥♥ 3.getBoard) DAO_getBoard 호출할 거 --> 리턴받고 바로 컨트롤러로 갈 거");
 		return dao.getBoard(bno);
 	}
 	// 3. 글 1개 정보 불러오기 getBoard 끝
 	
+	
+	
+	// 3-1. 조회수 1 증가 updateReadCount 
+	@Override
+	public void updateReadCount(Integer bno) throws Exception {
+		log.info("(♥♥♥♥♥ 3-1.updateReadCount) 컨트롤러가 호출함");
+		
+		log.info("(♥♥♥♥♥ 3-1.updateReadCount) DAO 호출할 거");
+		dao.updateReadCount(bno);
+		
+		log.info("(♥♥♥♥♥ 3-1.updateReadCount) DAO 갔다 왔구요~ Controller로 돌아갈게요");
+	}
+	// 3-1. 조회수 1 증가 updateReadCount 끝
+	
+	
+	
+	// 4-1. 글 수정하기
+	@Override
+	public Integer updateBoard(BoardVO vo) throws Exception {
+		log.info("(♥♥♥♥♥ 4-1.updateBoard) 컨트롤러가 호출함");
+		
+		log.info("(♥♥♥♥♥ 4-1.updateBoard) DAO 호출할 거");
+		int cnt = dao.updateBoard(vo);
+		
+		log.info("(♥♥♥♥♥ 4-1.updateBoard) DAO 갔다 왔구요~ Controller로 돌아갈게요 cnt: " + cnt);
+		return cnt;
+	}
+	// 4-1. 글 수정하기 끝
 	
 	
 	

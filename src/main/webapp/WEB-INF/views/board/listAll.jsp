@@ -35,9 +35,9 @@
 						<td><span class="badge bg-yellow">${vo.bno}</span></td>
 						<%-- <td> <span style="font-weight: bold;">제목: </span> ${vo.title} 
 							🐱🐱  
-							<span style="font-weight: bold;"> 내용: </span> ${vo.content }  </td>
-						<td>${vo.writer }</td> --%>
+							<span style="font-weight: bold;"> 내용: </span> ${vo.content }  </td>  --%>
 						<td> <a href="/board/read?bno=${vo.bno }">${vo.title }</a> </td>
+						<td>${vo.writer }</td>
 						<td> <fmt:formatDate value="${vo.regdate }" pattern="YYYY년 MM월 dd일 🌈  HH:mm" /> </td>
 						<td>${vo.viewcnt }</td>
 					</tr>

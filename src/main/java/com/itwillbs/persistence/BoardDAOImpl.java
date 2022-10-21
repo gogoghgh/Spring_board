@@ -79,5 +79,42 @@ public class BoardDAOImpl implements BoardDAO {
 	
 
 	
+	// 3-1. 조회수 1 증가
+	@Override
+	public void updateReadCount(Integer bno) throws Exception {
+		log.info("(♥♥♥♥♥ 3-1.updateReadCount) Service가 호출함");
+		
+		log.info("(♥♥♥♥♥ 3-1.updateReadCount) mapper 가서 DB 처리하러..");
+		// bno값 받아가서 updateReadCnt라는 쿼리 실행해라~~
+		sqlSession.update(NAMESPACE+".updateReadCnt", bno);
+		
+		log.info("(♥♥♥♥♥ 3-1.updateReadCount) mapper 갔다 왔고 --> Service로 간다^^");
+	}
+	// 3-1. 조회수 1 증가 끝
+	
+	
+	
+	// 4-1. 글 수정하기
+	@Override
+	public Integer updateBoard(BoardVO vo) throws Exception {
+		// 초반에는 TEST!!!랑 연결시켜야 함,, 
+		// test 존재 목적: 내가 짰던 게 정상적으로 동작하나?
+		// 왜 필요? 우리는 서버 환경 상, 로컬에서 동작하니까 데이터가 금방 눈에 잘 보이지만,,
+		// 실제 상용 서버는 서버 올리고 내리는 시간에 부담이 있덛라~ 리스크가 있떠라~~ 그니까 테스트 먼저 하는 것
+		// 설계만 잘 만들어 놓으면, 아예 따로 작업해도 된다,,!! 기존 MVC는 따로 작업한다 해도, 한 명이 view, DB,, 다 해야 했지만
+		// 테스트 사용하면,, 다 조각조각내서 기능 구현해놓고, 기다리다가~~~ 그에 해당하는 뷰 만들어지면 걍 연결만 해주믄 됨,,, 흠~~~???
+		log.info("(♥♥♥♥♥ 4-1.updateBoard) Service가 호출함");
+		
+		log.info("(♥♥♥♥♥ 4-1.updateBoard) mapper 가서 DB 처리하러..");
+		int cnt = sqlSession.update(NAMESPACE+".updateBoard", vo);
+		// Returns:  int  << The number of rows affected by the update.
+		// int로 받으면 되겠넴~~
+		
+		log.info("(♥♥♥♥♥ 4-1.updateBoard) mapper 갔다 왔고 --> Service로 간다^^  cnt: " + cnt);
+		return cnt;
+	}
+	// 4-1. 글 수정하기 끝
+
+	
 	
 }// class BoardDAOImpl
