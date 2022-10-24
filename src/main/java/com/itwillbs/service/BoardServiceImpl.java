@@ -96,5 +96,20 @@ public class BoardServiceImpl implements BoardService {
 	
 	
 	
+	// 5. 글 삭제하기 
+	@Override
+	public Integer removeBoard(int bno) throws Exception {
+		log.info("(♥♥♥♥♥ 5.removeBoard) 컨트롤러가 호출함");
+		
+		log.info("(♥♥♥♥♥ 5.removeBoard) DAO 호출할 거");
+		int cnt = dao.removeBoard(bno);
+		
+		log.info("(♥♥♥♥♥ 5.removeBoard) DAO 갔다 왔구요~ Controller로 돌아갈게요 cnt: " + cnt);
+		return cnt;
+	}
+	// 5. 글 삭제하기 끝
+	
+	
+	
 	
 } // class BoardServiceImpl

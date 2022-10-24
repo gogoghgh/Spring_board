@@ -177,7 +177,6 @@ public class BoardController {
 		
 		// 페이지 이동(기존 bno번 글 정보 출력)  -> /board/modify
 		log.info("(♥♥♥♥♥ 4.modifyGET) 리턴타입 void니까 들어온 주소 /board/modify.jsp로 이동");
-		
 	}
 	// 4. 글 수정하기 GET (기존 정보 조회 + 뉴 정보 입력받기) 끝
 	
@@ -185,7 +184,7 @@ public class BoardController {
 	
 	// 4-1. 글 수정하기 POST  (수정할 new 데이터 처리)
 	@RequestMapping(value = "/modify", method = RequestMethod.POST)
-	public String modifyPOST(BoardVO vo) throws Exception {
+	public String modifyPOST(BoardVO vo, RedirectAttributes rttr) throws Exception {
 		log.info("(♥♥♥♥♥ 4-1.modifyPOST) 호출됨");
 		// 한글 처리(생략..ㅋ web.xml에 필터 걸어놨으니까~ 오예~~)
 		// 직전 페이지에서 전달된 정보(=수정할 new 정보들) BoardVO에 저장
@@ -195,6 +194,9 @@ public class BoardController {
 		int cnt = service.updateBoard(vo);
 		
 		if(cnt == 1) {
+			// 글 썼을 때,, msg 줬던 것처럼 
+			rttr.addFlashAttribute("msg", "MOD_OK");
+			
 			// 수정 성공 시 --> listAll 페이지로 이동
 			log.info("(♥♥♥♥♥ 4-1.modifyPOST) 수정 성공^^ ㅊㅋㅊㅋ");
 			log.info("(♥♥♥♥♥ 4-1.modifyPOST) redirect:/board/listAll.jsp로 이동");
@@ -208,6 +210,31 @@ public class BoardController {
 	}
 	// 4-1. 글 수정하기 POST  (수정할 new 데이터 처리) 끝
 	
+	
+	
+	// 5. 글삭 POST
+	@RequestMapping (value = "/remove", method = RequestMethod.POST)
+	public String removePOST(@RequestParam("bno") int bno, RedirectAttributes rttr) throws Exception {
+		log.info("(♥♥♥♥♥ 5.removePOST) 호출됨");
+		
+		// 전달 정보(bno) 저장하기..는 이미 완
+		log.info("(♥♥♥♥♥ 5.removePOST) 넘어온 bno: " + bno);
+		
+		// 서비스_글 삭제 메서드 호출
+		int result = service.removeBoard(bno);
+		
+		if(result == 1) {
+			rttr.addAttribute("msg", "DEL_OK");
+			log.info("(♥♥♥♥♥ 5.removePOST) 삭제 성공");
+			log.info("(♥♥♥♥♥ 5.removePOST) redirect:/board/listAll.jsp로 이동");
+			return "redirect:/board/listAll";
+		} else {
+			log.info("(♥♥♥♥♥ 5.removePOST) 삭제 실패;;");
+			return "redirect:/board/listAll";
+		}
+		
+	}
+	// 5. 글삭 POST 끝
 	
 	
 	

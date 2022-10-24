@@ -7,13 +7,14 @@
 
 <h1>
 	WEB-INF/views/ <span
-		style="color: white; background-color: orange; font-size: 2em">
+		style="color: white; background-color: purple; font-size: 2em">
 		💐💐listAll😎😎 </span>.jsp
 </h1>
 <div class="box">
-	<div class="box-header with-border">
+	<div class="with-border">
 		<h3 class="box-title">💩💩 ~~ 가현스 게시판 ~~ 🧸🧸</h3>
 		<h3>EL{msg} : ${msg }</h3>
+		<h3><a href="/board/regist">여기를 눌러서 편하게 글쓰기 하십시오 ^^💘💘 </a></h3>
 <%-- 		<h3>EL{boardList} : ${boardList }</h3> --%>
 	</div>
 
@@ -32,7 +33,7 @@
 				<c:forEach var="vo" items="${boardList }">
 				
 					<tr>
-						<td><span class="badge bg-yellow">${vo.bno}</span></td>
+						<td><span class="badge bg-blue">${vo.bno}</span></td>
 						<%-- <td> <span style="font-weight: bold;">제목: </span> ${vo.title} 
 							🐱🐱  
 							<span style="font-weight: bold;"> 내용: </span> ${vo.content }  </td>  --%>
@@ -68,6 +69,14 @@
 	
 	if(result == "OK") {
 		alert("글쓰기 완료^^ 감사합ㄴ디ㅏ 🥰🥰");
+	}
+	
+	if(result == "MOD_OK"){
+		alert("글 수정 완 🥰");
+	}
+	
+	if(result == "DEL_OK"){
+		alert("글 삭제 완 🥰");
 	}
 </script>
 

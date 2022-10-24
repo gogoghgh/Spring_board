@@ -20,5 +20,8 @@ public interface BoardService {
 	
 	// 4-1. 글 수정하기
 	public Integer updateBoard(BoardVO vo) throws Exception;
+
+	// 5. 글 삭제하기
+	public Integer removeBoard(int bno) throws Exception;
 	
 }

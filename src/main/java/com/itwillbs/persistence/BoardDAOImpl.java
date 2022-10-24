@@ -114,7 +114,22 @@ public class BoardDAOImpl implements BoardDAO {
 		return cnt;
 	}
 	// 4-1. 글 수정하기 끝
-
+	
+	
+	
+	// 5. 글 삭제하기
+	@Override
+	public int removeBoard(int bno) throws Exception {
+		log.info("(♥♥♥♥♥ 5.removeBoard) Service가 호출함");
+		
+		log.info("(♥♥♥♥♥ 5.removeBoard) mapper 가서 DB 처리하러..");
+		int cnt = sqlSession.delete(NAMESPACE+".removeBoard", bno);
+		// int로 받으면 되겠넴~~
+		
+		log.info("(♥♥♥♥♥ 5.removeBoard) mapper 갔다 왔고 --> Service로 간다^^  cnt: " + cnt);
+		return cnt;
+	}
+	// 5. 글 삭제하기 끝
 	
 	
 }// class BoardDAOImpl
