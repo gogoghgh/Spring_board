@@ -1,6 +1,8 @@
 package com.itwillbs.persistence;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
@@ -61,6 +63,40 @@ public class BoardDAOImpl implements BoardDAO {
 		return boardList;
 	}
 	// 2. 전체 글 목록 조회 끝
+	
+	
+	
+	// 2-1. 페이징 처리한 글 목록 조회 
+	@Override
+	public List<BoardVO> listPage(Integer page) throws Exception {
+		log.info("(♥♥♥♥♥ 2-1.listPage) Service가 호출함");
+
+		if ( page <= 0 ) {
+			page = 1;
+		}
+		
+//		page = (page - 1) * 10; // 한 페이지에 10개씩 보여줄거니까~
+		// 1페이지? => 0~9
+		// 2페이지 => 10~19
+		// 3페이지 => 20~29
+		// 4페이지 => 30~39
+		
+		int pageSize = 30;  // 한 페이지에 30개씩 보여줄거니까~
+		page = (page - 1) * pageSize; 
+		
+		// 근데~~ page랑,, pageSize랑,, 둘 다 가져가야 되는데~ 어떡하쥐
+		// map 객체에 담아서!!! 가져가자!!!!
+		Map<String, Object> pageObj = new HashMap<String, Object>();
+		pageObj.put("page", page);
+		pageObj.put("pageSize", pageSize);
+		
+		
+		log.info("(♥♥♥♥♥ 2-1.listPage) mapper.xml 갈 거,, 가서 DB처리 하고 -> 바로 Service로 리턴할 거");
+		
+//		return sqlSession.selectList(NAMESPACE+".listPage", page);
+		return sqlSession.selectList(NAMESPACE+".listPage2", pageObj);
+	}
+	// 2-1. 페이징 처리한 글 목록 조회 끝
 	
 	
 	
