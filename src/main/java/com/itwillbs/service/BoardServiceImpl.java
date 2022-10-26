@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.BoardVO;
+import com.itwillbs.domain.PageVO;
 import com.itwillbs.persistence.BoardDAO;
 
 @Service
@@ -52,6 +53,21 @@ public class BoardServiceImpl implements BoardService {
 		return boardList;
 	}
 	// 2. 전체 글 목록 조회 getBoardListAll 끝
+	
+	
+	// 2-1. 페이징 처리 적용한 글 목록 조회 getListPage
+	@Override
+	public List<BoardVO> getListPage(PageVO vo) throws Exception {
+		log.info("(♥♥♥♥♥ 2-1.getListPage) 컨트롤러가 호출함");
+		
+		log.info("(♥♥♥♥♥ 2-1.getListPage) DAO_listPage(vo) 호출할 거");
+		List<BoardVO> boardList = dao.listPage(vo);
+		
+		log.info("(♥♥♥♥♥ 2-1.getListPage) DAO한테 결과 데이터 받았으니 --> Controller로 돌려줄게욥");
+		
+		return boardList;
+	}
+	// 2-1. 페이징 처리 적용한 글 목록 조회 getListPage 끝
 	
 	
 	

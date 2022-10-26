@@ -95,7 +95,7 @@
 	  
 	  $(".btn-success").click(function(){
 		  // 목록 버턴 클릭했을 때
-		  location.href = "/board/listAll";
+		  location.href = "/board/listPage?page=${page}";
 	  });// 목록 버턴 click
 	  
 	  

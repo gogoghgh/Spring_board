@@ -7,13 +7,15 @@
 
 <h1>
 	WEB-INF/views/ <span
-		style="color: white; background-color: purple; font-size: 2em">
+		style="color: white; background-color: pink; font-size: 2em">
 		💐💐listAll😎😎 </span>.jsp
 </h1>
 <div class="box">
 	<div class="with-border">
 		<h3 class="box-title">💩💩 ~~ 가현스 게시판 ~~ 🧸🧸</h3>
 		<h3>EL{msg} : ${msg }</h3>
+		<h3>페이징 처리 하단부 계산할 때 필요한 애들 가지고 있는 객체 PageMaker.. ↓  </h3>
+				<h4>${pm }</h4>
 		<h3><a href="/board/regist">여기를 눌러서 편하게 글쓰기 하십시오 ^^💘💘 </a></h3>
 <%-- 		<h3>EL{boardList} : ${boardList }</h3> --%>
 	</div>
@@ -51,15 +53,33 @@
 		</table>
 	</div>
 
+	<!-- ===================== 페이징 처리 구간 ========================== -->
 	<div class="box-footer clearfix">
 		<ul class="pagination pagination-sm no-margin pull-right">
-			<li><a href="#">«</a></li>
-			<li><a href="#">1</a></li>
-			<li><a href="#">2</a></li>
-			<li><a href="#">3</a></li>
-			<li><a href="#">»</a></li>
+			
+			<!-- 이전 버턴================ -->
+			<c:if test="${pm.prev }"> 
+					<!--      ㄴboolean 타입이니까 false면 걍 패스되는거~ 음 편하군  -->
+				<li><a href="listPage?page=${pm.startPage - 1 }">&laquo;</a></li>
+			</c:if>
+			
+			<!-- 1 2 3 4 .... ================ -->
+			<c:forEach var="index" begin="${pm.startPage }" end="${pm.endPage }"> 
+						<!-- 페이지 블럭에서 내가 선택한 현재 페이지만! active되도록 -->
+				<%-- 
+				<li <c:out value="${pm.vo.page == index? 'class=active' : '' }" />>   2.3버전 이하는 c:out 써야 함~ --%>
+				<li ${pm.vo.page == index? 'class=active' : '' } >
+					<a href="listPage?page=${index }">${index}</a>
+				</li>
+			</c:forEach>
+			
+			<!-- 다음 버턴================ -->
+			<c:if test="${pm.next }">
+				<li><a href="listPage?page=${pm.endPage + 1 }">&raquo;</a></li>
+			</c:if>
 		</ul>
 	</div>
+	<!-- ===================== 페이징 처리 구간 ========================== -->
 </div>
 
 
@@ -79,8 +99,5 @@
 		alert("글 삭제 완 🥰");
 	}
 </script>
-
-
-
 
 <%@ include file="../include/footer.jsp"%>

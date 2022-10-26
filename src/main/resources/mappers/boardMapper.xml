@@ -40,6 +40,12 @@
 		limit #{page}, #{pageSize}
 	</select>
 	
+	<select id="listPage3" resultType="BoardVO" resultMap="vo">
+		select *
+		from tbl_board
+		order by bno desc, regdate desc
+		limit #{pageStart}, #{perPageNum}
+	</select>
 	
 	
 	

@@ -9,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.itwillbs.domain.BoardVO;
+import com.itwillbs.domain.PageVO;
 import com.itwillbs.persistence.BoardDAO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -29,6 +30,7 @@ public class BoardDAOTest {
 	
 	
 	
+	
 //	@Test
 	public void 테스트확인() {
 		log.info("(♥♥♥♥♥ 테스트확인) 호출됨");
@@ -36,7 +38,7 @@ public class BoardDAOTest {
 	
 	
 	
-	@Test
+//	@Test
 	public void 페이징처리완료() {
 		log.info("(♥♥♥♥♥ 페이징처리완료) 호출됨");
 		
@@ -54,7 +56,34 @@ public class BoardDAOTest {
 		}
 		
 	}
+	// 페이징처리완료() 끝
 	
 	
-
+	
+	// DAO_2-2.listPage(vo) 잘 되남 테스트
+	@Test
+	public void pageVO_Test() {
+		log.info("(♥♥♥♥♥ pageVO_Test) 실행됨");
+		
+		// PageVO 객체 임의로 생성
+		PageVO vo = new PageVO(); // 생성자 만들 때, 1페이지+10개씩으로 기본값 설정해놨으니
+		
+		try {
+			dao.listPage(vo);
+			
+			log.info("(♥♥♥♥♥ pageVO_Test) dao.listPage(vo): " + dao.listPage(vo));
+			// 오~~~~ 1페이지!! 글 10개 정보들 쭉 나오네~~~ 
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	// DAO_2-2.listPage(vo) 잘 되남 테스트 끝
+	
+	
+	
+	
+	
+	
+	
 }// class BoardDAOTest

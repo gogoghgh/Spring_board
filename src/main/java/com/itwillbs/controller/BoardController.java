@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.domain.BoardVO;
+import com.itwillbs.domain.PageMakerVO;
+import com.itwillbs.domain.PageVO;
 import com.itwillbs.service.BoardService;
 
 @Controller
@@ -43,7 +45,7 @@ public class BoardController {
 	
 	
 	
-	// 1. 글쓰기 GET                       http://localhost:8080/board/regist
+	// 1. 글쓰기 GET                       http://localhost:8088/board/regist
 	@RequestMapping (value = "/regist", method = RequestMethod.GET)
 	public void registerGET() throws Exception {
 		log.info("(♥♥♥♥♥ 1.registerGET) 호출됨");
@@ -53,7 +55,7 @@ public class BoardController {
 	
 	
 	
-	// 1-2. 글쓰기 POST                       http://localhost:8080/board/regist
+	// 1-2. 글쓰기 POST                       http://localhost:8088/board/regist
 	@RequestMapping (value="/regist", method = RequestMethod.POST)
 //	public String registerPOST(BoardVO vo, Model model) throws Exception {  (알림 방법2)
 	public String registerPOST(BoardVO vo, RedirectAttributes rttr) throws Exception {
@@ -78,15 +80,15 @@ public class BoardController {
 			//  방법2. 모델 객체에 담아서 보내기
 			//  방법3. 모델 객체 대신 RedirectAttributes 객체 쓰기!! for flash.. 글쓰기 성공 알림=일회성이니까 
 		
-		log.info("(♥♥♥♥♥ 1-2.registerPOST) redirect:/board/listAll 로 이동할거");
+		log.info("(♥♥♥♥♥ 1-2.registerPOST) redirect:/board/listPage 로 이동할거");
 //		return "redirect:/board/listAll?msg=OK"; // (알림 방법1)
-		return "redirect:/board/listAll"; // 주소줄 변화 O + 페이지 이동 O
+		return "redirect:/board/listPage"; // 주소줄 변화 O + 페이지 이동 O
 	}
 	// 1-2. 글쓰기 POST 끝
 	
 	
 	
-	// 2. 게시판 리스트 조회 GET                  http://localhost:8080/board/listAll
+	// 2. 게시판 리스트 조회 GET                  http://localhost:8088/board/listAll
 	@RequestMapping (value = "/listAll", method = RequestMethod.GET)
 	public void listAllGET(@ModelAttribute("msg") String msg, Model model, HttpSession session) throws Exception {
 		log.info("(♥♥♥♥♥ 2.listAllGET) 호출됨");
@@ -118,7 +120,48 @@ public class BoardController {
 	
 	
 	
-	// 3. 글 본문 보기 GET                  http://localhost:8080/board/read
+	// 2-1. 페이징 처리 적용한 게시판 리스트 조회 GET        http://localhost:8088/board/listPage
+	@RequestMapping (value = "/listPage", method = RequestMethod.GET)
+	public String listPageGET(PageVO vo, Model model, HttpSession session) throws Exception {
+		log.info("(♥♥♥♥♥ 2-1.listPageGET) 호출됨");
+		
+//		PageVO vo = new PageVO();
+//		vo.setPage(2);
+//		vo.setPerPageNum(30); // 글 30개씩 불러오고 싶다~ ㅋ
+		// 근데 여기서 이렇게 페이지 설정하지 말고!! 파라메타로 해버리자
+		// 자동으로 파라메타 수집해주니까,,,,,,,,,,
+		// ㄴ   http://localhost:8088/board/listPage?page=2
+		//      http://localhost:8088/board/listPage?page=2&perPageNum=30
+		
+		log.info("(♥♥♥♥♥ 2-1.listPageGET) Service 호출할게욘");
+//		List<BoardVO> boardList = service.getListPage(vo);
+//		model.addAttribute("boardList", boardList);
+		// ㄴ 줄여서 ↓
+		model.addAttribute("boardList", service.getListPage(vo));
+		log.info("(♥♥♥♥♥ 2-1.listPageGET) Service 호출 + 모델 객체에 저장까지 완");
+		
+		// 페이징 처리 하단부 정보 저장
+		PageMakerVO pm = new PageMakerVO();
+		pm.setVo(vo);
+		pm.setTotalCnt(801); // <<찐 글 개수 일단 넣은거고,, 서비스에 이 동작 추가해놓으면 되겠네~ 총 글 개수 불ㄹ러오는
+		
+		// 얘도 model에 담아서 보냅시다..
+		model.addAttribute("pm", pm);
+		log.info("(♥♥♥♥♥ 2-1.listPageGET) PageMakerVO도 모델 객체에 저장 완 + pm: " + pm);
+		
+		
+		// 세션에 객체 isUpdate 하나  만들어놓기~~~ 
+		//    3()으로 정보 전달을 위해..
+		session.setAttribute("isUpdate", false);
+		
+		log.info("(♥♥♥♥♥ 2-1.listPageGET) 리턴타입 String --> /board/listAll.jsp로 이동할 거");
+		return "/board/listAll";
+	}
+	// 2-1. 페이징 처리 적용한 게시판 리스트 조회 GET
+	
+	
+	
+	// 3. 글 본문 보기 GET                  http://localhost:8088/board/read
 	@RequestMapping (value = "/read", method = RequestMethod.GET)
 //	public void readGET(@ModelAttribute("bno") int bno) throws Exception{  (방법1. modelAttri로 받기)
 	public void readGET(HttpSession session, @RequestParam("bno") int bno, Model model) throws Exception{  // (방법2. requestParam으로 받기)
@@ -158,7 +201,7 @@ public class BoardController {
 	
 	
 	
-	// 4. 글 수정하기 GET (기존 정보 조회 + 뉴 정보 입력받기)    http://localhost:8080/board/modify
+	// 4. 글 수정하기 GET (기존 정보 조회 + 뉴 정보 입력받기)    http://localhost:8088/board/modify
 	@RequestMapping (value = "/modify", method = RequestMethod.GET)
 //	public void modifyGET(/* @RequestParam("bno") */ int bno) throws Exception {
 	public void modifyGET(@RequestParam("bno") int bno, Model model) throws Exception {
@@ -199,8 +242,8 @@ public class BoardController {
 			
 			// 수정 성공 시 --> listAll 페이지로 이동
 			log.info("(♥♥♥♥♥ 4-1.modifyPOST) 수정 성공^^ ㅊㅋㅊㅋ");
-			log.info("(♥♥♥♥♥ 4-1.modifyPOST) redirect:/board/listAll.jsp로 이동");
-			return "redirect:/board/listAll"; // 주소줄 변화 O + 페이지 이동 O니까 redirect
+			log.info("(♥♥♥♥♥ 4-1.modifyPOST) redirect:/board/listPage.jsp로 이동");
+			return "redirect:/board/listPage"; // 주소줄 변화 O + 페이지 이동 O니까 redirect
 		} else {
 			// cnt==1이 아니다,,, cnt == 0이다,,,, 다시 수정 페이지로~ 갈건데 bno 들고 가기!!
 			log.info("(♥♥♥♥♥ 4-1.modifyPOST) 수정 실패;;  /modify?bno=" + vo.getBno()+ ".jsp로 이동");
@@ -226,11 +269,11 @@ public class BoardController {
 		if(result == 1) {
 			rttr.addAttribute("msg", "DEL_OK");
 			log.info("(♥♥♥♥♥ 5.removePOST) 삭제 성공");
-			log.info("(♥♥♥♥♥ 5.removePOST) redirect:/board/listAll.jsp로 이동");
-			return "redirect:/board/listAll";
+			log.info("(♥♥♥♥♥ 5.removePOST) redirect:/board/listPage.jsp로 이동");
+			return "redirect:/board/listPage";
 		} else {
 			log.info("(♥♥♥♥♥ 5.removePOST) 삭제 실패;;");
-			return "redirect:/board/listAll";
+			return "redirect:/board/listPage";
 		}
 		
 	}
